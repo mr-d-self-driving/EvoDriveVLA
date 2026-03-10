@@ -69,7 +69,7 @@ train_data="./data/nuscenes/Drive_KD_train_his_ego${PROMPT}.json"
 test_data="./data/nuscenes/Drive_KD_val_his_ego${PROMPT}.json"
 img_dir="./data"
 model="./Qwen/Qwen2.5-VL-${DEFAULT_MODEL_SIZE}-Instruct"
-teacher_model="./result/evodrivevla/nuscenes/teacher_mdoel_2025-12-02_20-27-45_3B_8epoch"
+teacher_model="./result/evodrivevla/nuscenes/teacher_mdoel"
 
 if [ "$TRAIN_TEACHER" = "True" ]; then
   train_data="./data/nuscenes/Drive_KD_train_his_ego_future.json"

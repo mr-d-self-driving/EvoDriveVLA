@@ -146,9 +146,6 @@ class LazySupervisedDataset(Dataset):
     def __init__(self, tokenizer: transformers.PreTrainedTokenizer, data_args):
         super(LazySupervisedDataset, self).__init__()
 
-        # dataset = data_args.dataset_use.split(",")
-        # dataset_list = data_list(dataset)
-        # rank0_print(f"Loading datasets: {dataset_list}")
         dataset = data_args.dataset_use
         dataset_list = [dataset]
         rank0_print(f"Loading datasets: {dataset_list}")
@@ -170,13 +167,7 @@ class LazySupervisedDataset(Dataset):
         list_data_dict = []
 
         for data in dataset_list:
-            # file_format = data["annotation_path"].split(".")[-1]
-            # if file_format == "jsonl":
-            #     annotations = read_jsonl(data["annotation_path"])
-            # else:
-            #     annotations = json.load(open(data["annotation_path"], "r"))
             annotations = json.load(open(data, "r"))
-            # sampling_rate = data.get("sampling_rate", 1.0)
             sampling_rate = 1.0
             if sampling_rate < 1.0:
                 annotations = random.sample(
@@ -185,12 +176,6 @@ class LazySupervisedDataset(Dataset):
                 print(f"sampling {len(annotations)} examples from dataset {data}")
             else:
                 rank0_print(f"dataset name: {data}")
-            # for ann in annotations:
-                # if isinstance(ann, list):
-                #     for sub_ann in ann:
-                #         sub_ann["data_path"] = data["data_path"]
-                # else:
-                    # ann["data_path"] = data["data_path"]
             list_data_dict += annotations
 
         rank0_print(f"Total training samples: {len(list_data_dict)}")
@@ -296,27 +281,6 @@ class LazySupervisedDataset(Dataset):
         video = vr.get_batch(frame_idx).asnumpy()
         return self.process_video_frames(video, frame_idx, video_length)
 
-    # def video_torchcodec(self, video_file):
-    #     device = "cpu"  # or e.g. "cuda"
-    #     decoder = VideoDecoder(video_file, device=device)
-    #     total_frames = decoder.metadata.num_frames
-    #     avg_fps = decoder.metadata.average_fps
-    #     video_length = total_frames / avg_fps
-    #     interval = getattr(self.data_args, "base_interval", 4)
-
-    #     num_frames_to_sample = round(video_length / interval)
-    #     video_min_frames = getattr(self.data_args, "video_min_frames", 4)
-    #     video_max_frames = getattr(self.data_args, "video_max_frames", 8)
-
-    #     target_frames = min(
-    #         max(num_frames_to_sample, video_min_frames), video_max_frames
-    #     )
-    #     frame_idx = np.linspace(0, total_frames - 1, target_frames, dtype=int)
-    #     frame_idx = np.unique(frame_idx)
-    #     frame_batch = decoder.get_frames_at(indices=frame_idx.tolist())
-    #     video = frame_batch.data.cpu().numpy()
-    #     return self.process_video_frames(video, frame_idx, video_length)
-
     def process_video_frames(self, video, frame_idx, video_length):
         fps = len(frame_idx) / video_length
         processor = copy.deepcopy(self.data_args.image_processor)
@@ -378,7 +342,6 @@ class LazySupervisedDataset(Dataset):
         second_per_grid_ts = None
         
         if "images" in sources[0]:      
-        # image_folder = sources[0]["data_path"]
             image_file = sources[0]["images"]
             if isinstance(image_file, List):
                 if len(image_file) > 1:
@@ -466,7 +429,6 @@ class LazySupervisedDataset(Dataset):
             )
 
         data_dict["position_ids"] = position_ids
-        # data_dict["attention_mask"] = [data_dict["input_ids"][0].size(0)]
         seq_len = data_dict["input_ids"].size(1) 
         data_dict["attention_mask"] = torch.ones((1, seq_len), dtype=torch.long)
 
@@ -509,15 +471,11 @@ class LazySupervisedDataset(Dataset):
             input_ids = torch.cat([d["input_ids"] for d in data_list], dim=1)
             labels = torch.cat([d["labels"] for d in data_list], dim=1)
             position_ids = torch.cat([d["position_ids"] for d in data_list], dim=2)
-            # attention_mask = [
-            #     d["attention_mask"][0] for d in data_list if "attention_mask" in d
-            # ]
             new_data_dict = {
                 "input_ids": input_ids,
                 "labels": labels,
                 "position_ids": position_ids,
                 "attention_mask": torch.ones((1, input_ids.size(1)), dtype=torch.long),
-                # "attention_mask": attention_mask if attention_mask else None
             }
             
             if any("pixel_values" in d for d in data_list):
@@ -559,17 +517,6 @@ class PackedDataCollatorForSupervisedDataset(object):
             [instance[key] for instance in instances]
             for key in ("input_ids", "labels", "position_ids", "attention_mask")
         )
-        # attention_mask = list(
-        #     itertools.chain(
-        #         *(
-        #             instance["attention_mask"]
-        #             for instance in instances
-        #             if "attention_mask" in instance
-        #         )
-        #     )
-        # )
-        # seq_lens = torch.tensor([0] + attention_mask, dtype=torch.int32)
-        # cumsum_seq_lens = torch.cumsum(seq_lens, dim=0, dtype=torch.int32)
         input_ids = torch.cat(input_ids, dim=1)
         labels = torch.cat(labels, dim=1)
         position_ids = torch.cat(position_ids, dim=2)
@@ -578,7 +525,6 @@ class PackedDataCollatorForSupervisedDataset(object):
         batch = dict(
             input_ids=input_ids,
             labels=labels,
-            # attention_mask=cumsum_seq_lens,
             attention_mask=attention_mask,
             position_ids=position_ids,
         )
@@ -608,9 +554,6 @@ class PackedDataCollatorForSupervisedDataset(object):
         else:
             concat_images = None
             grid_thw = None
-
-        # if len(true_images) != 0:
-        #     concat_true_images = torch.cat([image for image in true_images], dim=0)
 
         if len(videos) != 0:
             concat_videos = torch.cat([video for video in videos], dim=0)

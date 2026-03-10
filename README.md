@@ -1,19 +1,14 @@
-Prepare:
-conda env create -f environment.yml
-conda activate EvoDriveVLA
-
 <div align="center">
 <a id="readme-top"></a>
-<!-- <h1> <img src="assets/logo.png" style="vertical-align: -10px;" :height="50px" width="50px"> FutureSightDrive: Thinking Visually with Spatio-Temporal CoT for Autonomous Driving </h1> -->
 <h1> <img style="vertical-align: -10px;" :height="50px" width="50px"> EvoDriveVLA: Evolving Autonomous Driving VLA Models via Collaborative Perception-Planning Distillation </h1>
 <!-- <h3 align="center"><strong>🎉🎉NeurIPS 2025 spotlight🎉🎉</strong></h3> -->
 
 <!-- <a href="https://arxiv.org/abs/2505.17685"><img src='https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv&logoColor=white' alt='arXiv'></a>
 <a href='https://miv-xjtu.github.io/FSDrive.github.io'><img src='https://img.shields.io/badge/Project_Page-Website-green?logo=googlechrome&logoColor=white' alt='Project Page'></a> -->
 
-Jiajun Cao<sup>1,2</sup>,
-Xiaoan Zhang<sup>1,2</sup>,
-Xiaobao Wei<sup>1</sup>,
+Jiajun Cao<sup>1,2†</sup>,
+Xiaoan Zhang<sup>1,2†</sup>,
+Xiaobao Wei<sup>1†</sup>,
 Liyuqiu Huang<sup>1,2</sup>,
 Wang Zijian<sup>2</sup>,
 Hanzhen Zhang<sup>2</sup>,
@@ -21,12 +16,15 @@ Zhengyu Jia<sup>2</sup>,
 Wei Mao<sup>2</sup>,
 Xianming Liu<sup>2</sup>,
 Shuchang Zhou<sup>2</sup>,
-Yang Wang<sup>2</sup>,
-Shanghang Zhang<sup>1</sup>,
-<!-- [Xing Wei](https://scholar.google.com.hk/citations?user=KNyC5EUAAAAJ&hl=zh-CN&oi=ao/)<sup>2</sup>, -->
+Yang Wang<sup>2*</sup>,
+Shanghang Zhang<sup>1*</sup>,
 
 <sup>1</sup>Peking University,
 <sup>2</sup>XPENG
+
+† Equal contribution 
+
+\* Corresponding authors
 
 <div align="center">
 <img src="./assets/main.png" width="1000">
@@ -64,6 +62,8 @@ conda env create -f environment.yml -y
 
 conda activate EvoDriveVLA
 ```
+Download the [Student model](https://huggingface.co/Paipai-zxa/EvoDriveVLA/tree/main/student_model) and [Teacher model](https://huggingface.co/Paipai-zxa/EvoDriveVLA/tree/main/teacher_model).
+
 <p align="right"><a href="#readme-top"><img src=https://img.shields.io/badge/back%20to%20top-red?style=flat
 ></a></p>
 
@@ -73,11 +73,14 @@ conda activate EvoDriveVLA
 
 Download the complete dataset from [nuScenes](https://www.nuscenes.org/nuscenes#download) and extract it to `./data/nuscenes`
 
-Or establish a soft connection：
+Or establish a soft connection with your data：
 
 ```bash
 ln -s /path/to/your/nuscenes ./data
 ```
+
+Download the [dataset information](https://huggingface.co/Paipai-zxa/EvoDriveVLA/blob/main/cached_nuscenes_info.pkl), [dataset split](https://huggingface.co/Paipai-zxa/EvoDriveVLA/blob/main/full_split.json) and [dataset metrics](https://huggingface.co/Paipai-zxa/EvoDriveVLA/tree/main/metrics).
+
 
 2、Construct data
 
@@ -105,9 +108,27 @@ python data/gen_data.py --split train --llm_kd
 python data/gen_data.py --split val --llm_kd
 ```
 
-<!-- Follow the [LLaMA-Factory tutorial](https://github.com/hiyouga/LLaMA-Factory/blob/main/data/README.md) and add the dataset information in the file `./LLaMA-Factory/data/dataset_info.json`.
+Data directory format is as follows
+```
+--data
+  --nuscenes_complete_data
+  --cached_nuscenes_info.pkl
+  --full_split.json
+  --metrics
+    --gt_traj.pkl
+    --gt_traj_mask.pkl
+    --stp3_gt_seg.pkl
+    --uniad_gt_seg.pkl
+  --Drive_KD_train_his_ego_future.json
+  --Drive_KD_val_his_ego_future.json
+  --Drive_KD_train_his_ego.json
+  --Drive_KD_val_his_ego.json
+  --Drive_KD_train_his_ego_llm_kd.json
+  --Drive_KD_val_his_ego_llm_kd.json
+```
 <p align="right"><a href="#readme-top"><img src=https://img.shields.io/badge/back%20to%20top-red?style=flat
-></a></p> -->
+></a></p>
+
 
 ## 🚀 Training
 Enter the working directory of EvoDriveVLA:
@@ -172,38 +193,28 @@ Here are the visualization results of our vehicle trajectories.
 <div align="center">
 <img src="./assets/visual_APP_01.png" width="1000">
 </div>
-<div align="center">
-<img src="./assets/visual_APP_01.png" width="1000">
-</div>
 
-<!-- Use the following command under the FSDrive directory to visualize the trajectory:
-```bash
-python tools/visualization/visualize_planning.py \
---pred-trajs-path ./LLaMA-Factory/results.jsonl \
---tokens-path ./LLaMA-Factory/eval_traj.json \  
---output-path ./vis_traj
-``` -->
 <p align="right"><a href="#readme-top"><img src=https://img.shields.io/badge/back%20to%20top-red?style=flat
 ></a></p>
 
 
-<!-- ## 📜 Citing
+## 📜 Citing
 
-If you find DriveVLA is useful in your research or applications, please consider giving us a star 🌟 and citing it by the following BibTeX entry:
+If you find EvoDriveVLA is useful in your research or applications, please consider giving us a star 🌟 and citing it by the following BibTeX entry:
 
-```
+<!-- ```
 @article{zeng2025futuresightdrive,
   title={FutureSightDrive: Thinking Visually with Spatio-Temporal CoT for Autonomous Driving},
   author={Zeng, Shuang and Chang, Xinyuan and Xie, Mengwei and Liu, Xinran and Bai, Yifan and Pan, Zheng and Xu, Mu and Wei, Xing},
   journal={arXiv preprint arXiv:2505.17685},
   year={2025}
 }
-```
+``` -->
 <p align="right"><a href="#readme-top"><img src=https://img.shields.io/badge/back%20to%20top-red?style=flat
-></a></p> -->
+></a></p>
 
-<!-- ## 🙏 Acknowledgement
-Our work is primarily based on the following codebases:[LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory), [MoVQGAN](https://github.com/ai-forever/MoVQGAN), [GPT-Driver](https://github.com/PointsCoder/GPT-Driver), [Agent-Driver](https://github.com/USC-GVL/Agent-Driver). We are sincerely grateful for their work.
+## 🙏 Acknowledgement
+Our work is primarily based on the following codebases:[Impromptu-VLA](https://github.com/ahydchh/Impromptu-VLA.git), [FSDrive](https://github.com/MIV-XJTU/FSDrive) and, [OmniDrive](https://github.com/NVlabs/OmniDrive.git).
 
 <p align="right"><a href="#readme-top"><img src=https://img.shields.io/badge/back%20to%20top-red?style=flat
-></a></p> -->
+></a></p>

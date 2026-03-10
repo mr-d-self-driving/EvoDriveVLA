@@ -9,7 +9,7 @@ import re
 import ast
 import argparse
 
-cache_data = pickle.load(open('/workspace/group_share/adc-perception-mlinfra/caojj3/data/nuscenes/cached_nuscenes_info.pkl', 'rb'))
+cache_data = pickle.load(open('./data/nuscenes/cached_nuscenes_info.pkl', 'rb'))
 
 def planning_evaluation_uniad(pred_trajs_dict, config):
     future_second = 3
@@ -170,7 +170,7 @@ if __name__ == "__main__":
     parser.add_argument('--method', type=str, help='name of the method being evaluated, used for table print', default='Drive_KD')
     parser.add_argument('--result_file', type=str, help='path to the result file')
     parser.add_argument('--save_file', type=str, help='path to the eval_result file')
-    parser.add_argument('--gt_folder', type=str, default='/workspace/group_share/adc-perception-mlinfra/caojj3/data/nuscenes/data/metrics')
+    parser.add_argument('--gt_folder', type=str, default='./data/nuscenes/data/metrics')
     config = parser.parse_args()
 
     result_file = Path(config.result_file)

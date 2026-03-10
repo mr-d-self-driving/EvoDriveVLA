@@ -110,7 +110,6 @@ def train():
         
     )
     model = model.to(device=f"cuda:{training_args.local_rank}", dtype=torch.bfloat16)
-    # model = model.to(device="cuda", dtype=torch.bfloat16)
 
     model.init_teacher(
         teacher_model_name_or_path=model_args.teacher_model_name_or_path,
@@ -154,7 +153,6 @@ def train():
     set_model(model_args, model)
 
     if torch.distributed.get_rank() == 0:
-        # model.visual.print_trainable_parameters()
         model.model.print_trainable_parameters()
     
     if data_args.data_packing:
@@ -193,8 +191,4 @@ def train():
     trainer.model.config.save_pretrained(training_args.output_dir)
 
 if __name__ == "__main__":
-    # import debugpy
-    # debugpy.listen(("127.0.0.1", 5678))
-    # print("Waiting for debugger attach...")
-    # debugpy.wait_for_client()
     train()
