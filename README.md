@@ -44,8 +44,9 @@ Shanghang Zhang<sup>1*</sup>,
 - [🚀 Training](#-Training)
 - [🎯 Infer](#-Infer)
 - [📈 Evaluation](#-Evaluation)
-<!-- - [📜 Citing](#-Citing)
-- [🙏 Acknowledgement](#-Acknowledgement) -->
+- [👀 Visualization](#-Visualization)
+- [📜  Citing](#-Citing)
+- [🙏 Acknowledgement](#-Acknowledgement)
 <p align="right"><a href="#readme-top"><img src=https://img.shields.io/badge/back%20to%20top-red?style=flat
 ></a></p>
 
