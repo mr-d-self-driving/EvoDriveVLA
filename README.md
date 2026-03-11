@@ -4,8 +4,8 @@
 via Collaborative Perception-Planning Distillation </h1>
 <!-- <h3 align="center"><strong>🎉🎉NeurIPS 2025 spotlight🎉🎉</strong></h3> -->
 
-<!-- <a href="https://arxiv.org/abs/2505.17685"><img src='https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv&logoColor=white' alt='arXiv'></a>
-<a href='https://miv-xjtu.github.io/FSDrive.github.io'><img src='https://img.shields.io/badge/Project_Page-Website-green?logo=googlechrome&logoColor=white' alt='Project Page'></a> -->
+<a href="https://arxiv.org/abs/2603.09465"><img src='https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv&logoColor=white' alt='arXiv'></a>
+<!-- <a href='https://miv-xjtu.github.io/FSDrive.github.io'><img src='https://img.shields.io/badge/Project_Page-Website-green?logo=googlechrome&logoColor=white' alt='Project Page'></a> -->
 
 Jiajun Cao<sup>1,2†</sup>,
 Xiaoan Zhang<sup>1,2†</sup>,
@@ -204,14 +204,17 @@ Here are the visualization results of our vehicle trajectories.
 
 If you find EvoDriveVLA is useful in your research or applications, please consider giving us a star 🌟 and citing it by the following BibTeX entry:
 
-<!-- ```
-@article{zeng2025futuresightdrive,
-  title={FutureSightDrive: Thinking Visually with Spatio-Temporal CoT for Autonomous Driving},
-  author={Zeng, Shuang and Chang, Xinyuan and Xie, Mengwei and Liu, Xinran and Bai, Yifan and Pan, Zheng and Xu, Mu and Wei, Xing},
-  journal={arXiv preprint arXiv:2505.17685},
-  year={2025}
+```
+@misc{cao2026evodrivevlaevolvingautonomousdriving,
+      title={EvoDriveVLA: Evolving Autonomous Driving Vision-Language-Action Model via Collaborative Perception-Planning Distillation}, 
+      author={Jiajun Cao and Xiaoan Zhang and Xiaobao Wei and Liyuqiu Huang and Wang Zijian and Hanzhen Zhang and Zhengyu Jia and Wei Mao and Hao Wang and Xianming Liu and Shuchang Zhou Liu and Yang Wang and Shanghang Zhang},
+      year={2026},
+      eprint={2603.09465},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2603.09465}, 
 }
-``` -->
+```
 <p align="right"><a href="#readme-top"><img src=https://img.shields.io/badge/back%20to%20top-red?style=flat
 ></a></p>
 
