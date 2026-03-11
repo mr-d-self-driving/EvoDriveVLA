@@ -1,6 +1,7 @@
 <div align="center">
 <a id="readme-top"></a>
-<h1> <img style="vertical-align: -10px;" :height="50px" width="50px"> EvoDriveVLA: Evolving Autonomous Driving VLA Models via Collaborative Perception-Planning Distillation </h1>
+<h1> <img style="vertical-align: -10px;" :height="50px" width="50px"> EvoDriveVLA: Evolving Autonomous Driving Vision–Language–Action Model
+via Collaborative Perception-Planning Distillation </h1>
 <!-- <h3 align="center"><strong>🎉🎉NeurIPS 2025 spotlight🎉🎉</strong></h3> -->
 
 <!-- <a href="https://arxiv.org/abs/2505.17685"><img src='https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv&logoColor=white' alt='arXiv'></a>
