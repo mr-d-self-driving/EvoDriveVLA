@@ -42,7 +42,7 @@ def generate_user_message(args, data, token, perception_range=20.0, short=True):
     user_message  = f"Here's some information you'll need:\n"
     
     data_dict = data[token]
-    if args.future or args.one_point:
+    if args.future:
         camera_types = [
             'CAM_FRONT',
         ]
@@ -72,15 +72,6 @@ def generate_user_message(args, data, token, perception_range=20.0, short=True):
         if len(future_cams) < 3:
             for _ in range(1 - len(future_cams)):
                 future_cams.append(sample['cams']['CAM_FRONT']['data_path'].replace('/localdata_ssd/nuScenes', './data/nuscenes', 1))
-        images_path.extend(future_cams)
-    if args.one_point:
-        future_cams = []
-        sample = data_dict
-        if sample['next'] == '' or sample['next'] is None:
-            next_sample = sample
-        else:
-            next_sample = data[sample['next']]
-        future_cams.append(next_sample['cams']['CAM_FRONT']['data_path'].replace('/localdata_ssd/nuScenes', './data/nuscenes', 1))
         images_path.extend(future_cams)
     """
     Historical Trjectory:
@@ -165,12 +156,6 @@ def generate_future_traj(data, token, args):
     y4 = data_dict['gt_ego_fut_trajs'][4][1]
     y5 = data_dict['gt_ego_fut_trajs'][5][1]
     y6 = data_dict['gt_ego_fut_trajs'][6][1]
-    if args.one_point:
-        assitant_message += f"[({x1:.2f},{y1:.2f}), (0.00,0.00), (0.00,0.00), (0.00,0.00), (0.00,0.00), (0.00,0.00)]"
-        return assitant_message
-    elif args.delta:
-        assitant_message += f"[({x1:.2f},{y1:.2f}), ({(x2-x1):.2f},{(y2-y1):.2f}), ({(x3 - x2):.2f},{(y3 - y2):.2f}), ({(x4 - x3):.2f},{(y4 - y3):.2f}), ({(x5 - x4):.2f},{(y5 - y4):.2f}), ({(x6 - x5):.2f},{(y6 - y5):.2f})]"
-        return assitant_message
     assitant_message += f"[({x1:.2f},{y1:.2f}), ({x2:.2f},{y2:.2f}), ({x3:.2f},{y3:.2f}), ({x4:.2f},{y4:.2f}), ({x5:.2f},{y5:.2f}), ({x6:.2f},{y6:.2f})]"
     return assitant_message
 

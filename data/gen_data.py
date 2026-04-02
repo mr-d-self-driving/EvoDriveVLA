@@ -71,12 +71,12 @@ for token in tqdm(tokens):
                             "messages": [
                                 {
                                     "role": "user",
-                                    "content": "Here are current front cam image from the car: 'CURRENT CAM_FRONT': <image>\n Here are future three secends front cam image from the car: 'FUTURE 1S CAM_FRONT': <image>\n" + user_message + "Based on the provided particulars, please output the plan waypoints (0.5s intervals) for the next 3 seconds.\n"                                
+                                    "content": "Here are current front cam image from the car: 'CURRENT CAM_FRONT': <image>\n Here are future three secends front cam image from the car: 'FUTURE 1S CAM_FRONT': <image>\n, 'FUTURE 2S CAM_FRONT': <image>\n, 'FUTURE 3S CAM_FRONT': <image>\n" + user_message_teacher + future_ego + "Based on the provided particulars, please output the plan waypoints (0.5s intervals) for the next 3 seconds.\n"                                
                                 },
                                 {
                                     "role": "assistant",                                
                                     "content": future_traj + " These are the future waypoints. \n"
-                                },                    
+                                },                  
                             ]
                         } 
     else:
@@ -96,7 +96,7 @@ for token in tqdm(tokens):
                             ]                            
                         }
     train_messages.append(train_message)
-if args.llm_kd:
+if args.future:
     with open(f"./data/nuscenes/Drive_KD_{args.split}_his_ego_future.json", "w") as f:
         json.dump(train_messages, f, indent=4)  
 elif args.llm_kd:
